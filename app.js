@@ -3,8 +3,8 @@ const path = require('node:path')
 const session = require('express-session');
 const passport = require('passport');
 const routes = require('./routes/routes.js');
-const pgSession = require('connect-pg-simple')(session);
-const pool = require('./db/pool');
+const { PrismaSessionStore } = require('@quixo3/prisma-session-store');
+const prisma = require('./db/prisma.js')
 require('dotenv').config();
 
 
@@ -17,14 +17,19 @@ app.use(express.urlencoded({extended: false}));
 
 
 app.use(session({
-  store: new pgSession({
-    pool: pool,
-  }),
+  store: new PrismaSessionStore(
+    prisma,
+    {
+      checkPeriod: 2 * 60 * 1000,  //ms
+      dbRecordIdIsSessionId: true,
+      dbRecordIdFunction: undefined,
+    }
+  ),
   secret: process.env.SECRET,
-  resave: false,
+  resave: true,
   saveUninitialized: true,
   cookie: {
-    maxAge: 24 * 60 * 60 * 1000
+    maxAge: 7* 24 * 60 * 60 * 1000
   }
 }));
 

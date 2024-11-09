@@ -1,5 +1,5 @@
 const passport = require('passport');
-const pool = require('../db/pool')
+const prisma = require('../db/prisma.js')
 const bcrypt = require('bcryptjs')
 
 const login = passport.authenticate('local', {
@@ -13,10 +13,12 @@ const register = async (req, res, next) => {
       return next(err);
     }
     try {
-      await pool.query("INSERT INTO users (username, password) VALUES ($1, $2)", [
-        req.body.username,
-        hashedPassword,
-      ]);
+      await prisma.users.create({ 
+        data: {
+          username: req.body.username,
+          password: hashedPassword,
+        }
+      });
       res.redirect("/login");
     } catch(err) {
       return next(err);
