@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+</head>
+<body>
+  <h1>Home</h1>
+  <% if (!locals.currentUser){ %>
+    <p>You are not logged in.</p>
+    <a href="/register">Register</a>
+    <a href="/login">Login</a>
+  <% } %>
+  <%if (locals.currentUser) { %>
+    <p>You are logged in</p>
+    <p>Welcome <%= locals.currentUser.username %></p>
+    <a href="/logout">Logout</a>
+  <%}%>
+</body>
+</html>
