@@ -56,4 +56,13 @@ const loginFailure =  (req, res, next) => {
   res.render('login', {errors:[{msg:'Username or password did not match'}]})
 }
 
-module.exports = {login, register, index, loginForm, registerForm, logout, redirectIndex, loginFailure}
+const uploadForm = (req, res) => {
+  res.render('upload')
+}
+
+const uploadConfirm = (req, res) => {
+  console.log(req.file, req.body)
+  res.redirect('/')
+}
+
+module.exports = {login, register, index, loginForm, registerForm, logout, redirectIndex, loginFailure, uploadForm, uploadConfirm}
