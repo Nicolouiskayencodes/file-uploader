@@ -7,7 +7,17 @@ passport.use(new LocalStrategy(
   async (username, password, done)=>{
     try {
       const user = await prisma.users.findUnique({
-        where: {username: username}
+        where: {username: username},
+        include: {
+          mainFolder: {
+          select:{name: true,
+            id: true,
+            subfolders: {select:{id: true,name: true,}},
+            files: {select:{id: true, name: true,
+              filepath: true,
+            }}
+          }
+        }}
       })
     if (!user) {
       return done(null, false, {message: 'Incorrect username'});
@@ -16,6 +26,7 @@ passport.use(new LocalStrategy(
     if (!match) {
       return done(null, false, { message: "Incorrect password" })
     }
+    delete user.password;
     return done(null, user)
   } catch(err) {
     return done(err);
@@ -29,9 +40,19 @@ passport.serializeUser((user,done)=>{
 passport.deserializeUser(async(id,done)=>{
   try {
     const user = await prisma.users.findUnique({
-      where: {id: id}
+      where: {id: id},
+      include: {
+        mainFolder: {
+          select:{name: true,
+            id: true,
+            subfolders: {select:{id: true,name: true,}},
+            files: {select:{id: true, name: true,
+              filepath: true,
+            }}
+          }
+      }}
     })
-
+    delete user.password;
     done(null, user);
   } catch (err) {
     done(err);

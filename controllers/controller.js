@@ -1,6 +1,6 @@
 const passport = require('passport');
 const prisma = require('../db/prisma.js')
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
 
 const login = passport.authenticate('local', {
   successRedirect: "/login-success",
@@ -17,6 +17,11 @@ const register = async (req, res, next) => {
         data: {
           username: req.body.username,
           password: hashedPassword,
+          mainFolder: {
+            create: {
+              name: req.body.username
+            }
+          }
         }
       });
       res.redirect("/login");

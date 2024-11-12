@@ -17,6 +17,7 @@
     <p>Welcome <%= locals.currentUser.username %></p>
     <a href="/upload">Upload a file</a>
     <a href="/logout">Logout</a>
+    <h2><%= locals.currentUser.mainFolder.name %></h2>
   <%}%>
 </body>
 </html>
