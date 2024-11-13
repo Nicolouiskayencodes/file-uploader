@@ -3,6 +3,7 @@ const prisma = require('../db/prisma.js')
 const bcrypt = require('bcryptjs');
 const supabase = require('../config/supabase.js')
 const Crypto = require('crypto');
+const {decode} = require('base64-arraybuffer')
 
 const login = passport.authenticate('local', {
   successRedirect: "/login-success",
@@ -77,10 +78,11 @@ const uploadConfirm = async (req, res, next) => {
       res.status(400).json({ message: "Please upload a file"});
       return
     }
+    const fileBase64 = decode(file.buffer.toString('base64'))
 
     const {data, error} = await supabase.storage
     .from('file-uploader')
-    .upload(`public/${filename}`, file, {
+    .upload(`public/${filename}`, fileBase64, {
       contentType: file.mimetype
     });
     if (error) {
