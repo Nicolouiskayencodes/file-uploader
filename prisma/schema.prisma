@@ -24,14 +24,15 @@ model Users {
   id    Int     @id @default(autoincrement())
   username String @unique
   password String
-  mainFolder Folder @relation(fields: [folderId], references: [id])
-  folderId Int @unique
+  folders Folder[]
 }
 
 model Folder {
   id    Int   @id @default(autoincrement())
   name String
-  owner Users? 
+  isMain Boolean @default(false)
+  owner Users @relation(fields: [ownerId], references: [id])
+  ownerId Int
   parentFolder Folder? @relation("subfolders",fields: [parentId], references: [id])
   parentId Int?
   subfolders Folder[] @relation("subfolders")

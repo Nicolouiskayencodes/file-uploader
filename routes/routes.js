@@ -34,4 +34,8 @@ router.get('/login-failure', controller.loginFailure);
 router.get('/upload', controller.uploadForm)
 router.post('/upload', upload.single('uploaded_file'), controller.uploadConfirm)
 
+router.post('/addFolder/:id', controller.addFile)
+
+router.get('/folder/:id', controller.openFolder)
+
 module.exports = router;

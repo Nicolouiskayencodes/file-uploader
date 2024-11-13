@@ -9,14 +9,18 @@ passport.use(new LocalStrategy(
       const user = await prisma.users.findUnique({
         where: {username: username},
         include: {
-          mainFolder: {
-          select:{name: true,
-            id: true,
-            subfolders: {select:{id: true,name: true,}},
-            files: {select:{id: true, name: true,
-              filepath: true,
-            }}
-          }
+          folders: {
+            where: {
+              isMain: true
+            },
+            select:{name: true,
+              id: true,
+              isMain: true,
+              subfolders: {select:{id: true,name: true,}},
+              files: {select:{id: true, name: true,
+                filepath: true,
+              }}
+            }
         }}
       })
     if (!user) {
@@ -42,9 +46,13 @@ passport.deserializeUser(async(id,done)=>{
     const user = await prisma.users.findUnique({
       where: {id: id},
       include: {
-        mainFolder: {
+        folders: {
+          where: {
+            isMain: true
+          },
           select:{name: true,
             id: true,
+            isMain: true,
             subfolders: {select:{id: true,name: true,}},
             files: {select:{id: true, name: true,
               filepath: true,

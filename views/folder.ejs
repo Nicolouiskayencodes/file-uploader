@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%=folder.name%></title>
+</head>
+<body>
+  <% if (locals.currentUser && folder.ownerId === locals.currentUser.id) {%>
+    <h2><%= folder.name %></h2>
+    <button onclick="folderPrompt()">New Folder</button>
+    <form class="folder-prompt" style="display: none;" method="POST" action="/addFolder/<%=folder.id%>">
+      <label>Folder name: <input name="folderName" type="text"></label>
+      <button type="submit">Create folder</button>
+    </form>
+    <a href="/addFile/<%=folder.id%>">Add File</a>
+    <% folder.subfolders.forEach(subfolder=>{ %>
+      <button><a href="/folder/<%=subfolder.id%>"><%=subfolder.name%></a></button>
+    <% }); %>
+    <% folder.files.forEach(file=>{ %>
+      <a href="/download/<%=file.id%>"><%=file.name%></p></a>
+    <%}); %>
+    <script>
+      function folderPrompt(){
+        document.querySelector('.folder-prompt').style.display = 'block'
+      }
+    </script>
+  <%} else {%>
+    <p>You do not have permission to view this folder</p>
+  <% } %>
+</body>
+</html>

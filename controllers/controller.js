@@ -17,9 +17,10 @@ const register = async (req, res, next) => {
         data: {
           username: req.body.username,
           password: hashedPassword,
-          mainFolder: {
+          folders: {
             create: {
-              name: req.body.username
+              name: req.body.username,
+              isMain: true
             }
           }
         }
@@ -70,4 +71,29 @@ const uploadConfirm = (req, res) => {
   res.redirect('/')
 }
 
-module.exports = {login, register, index, loginForm, registerForm, logout, redirectIndex, loginFailure, uploadForm, uploadConfirm}
+const addFile = async (req, res) => {
+  const folderName = req.body.folderName;
+  await prisma.folder.create({
+    data: {
+      name: folderName,
+      parentId: parseInt(req.params.id),
+      ownerId: res.locals.currentUser.id,
+    }
+  })
+  res.redirect(`/folder/${req.params.id}`)
+}
+
+const openFolder = async (req, res) => {
+  const folder = await prisma.folder.findUnique({
+    where: {
+      id: parseInt(req.params.id),
+    },
+    include: {
+      subfolders: true,
+      files: true,
+    }
+  })
+  res.render('folder', {folder: folder})
+}
+
+module.exports = {login, register, index, loginForm, registerForm, logout, redirectIndex, loginFailure, uploadForm, uploadConfirm, addFile, openFolder}

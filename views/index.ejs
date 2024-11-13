@@ -17,7 +17,28 @@
     <p>Welcome <%= locals.currentUser.username %></p>
     <a href="/upload">Upload a file</a>
     <a href="/logout">Logout</a>
-    <h2><%= locals.currentUser.mainFolder.name %></h2>
-  <%}%>
+    <% locals.currentUser.folders.forEach(folder=>{%>
+      <% if (folder.isMain === true) {%>
+        <h2><%= folder.name %></h2>
+            <button onclick="folderPrompt()">New Folder</button>
+            <form class="folder-prompt" style="display: none;" method="POST" action="/addFolder/<%=folder.id%>">
+              <label>Folder name: <input name="folderName" type="text"></label>
+              <button type="submit">Create folder</button>
+            </form>
+            <a href="/addFile/<%=folder.id%>">Add File</a>
+            <% folder.subfolders.forEach(subfolder=>{ %>
+              <button><a href="/folder/<%=subfolder.id%>"><%=subfolder.name%></a></button>
+            <% }); %>
+            <% folder.files.forEach(file=>{ %>
+              <a href="/download/<%=file.id%>"><%=file.name%></p></a>
+            <%}); %>
+          <%}%>
+    <%})}%>
+    
+  <script>
+    function folderPrompt(){
+      document.querySelector('.folder-prompt').style.display = 'block'
+    }
+  </script>
 </body>
 </html>

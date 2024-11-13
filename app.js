@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 app.use((req, res, next)=>{
   console.log(res.locals);
   if (res.locals.currentUser){
-    console.log(res.locals.currentUser.mainFolder)
+    console.log(res.locals.currentUser.folders)
   }
   next();
 })
