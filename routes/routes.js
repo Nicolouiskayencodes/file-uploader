@@ -38,4 +38,6 @@ router.post('/addFolder/:id', controller.addFile)
 
 router.get('/folder/:id', controller.openFolder)
 
+router.post('/deleteFolder/:id', controller.deleteFolder)
+
 module.exports = router;

@@ -10,6 +10,12 @@
   <% if (locals.currentUser && folder.ownerId === locals.currentUser.id) {%>
     <h2><%= folder.name %></h2>
     <%if(!folder.isMain){%>
+      <button onclick="deleteConfirm()">Delete <%folder.name%></button>
+      <form class="delete-confirm" style="display: none;" method="POST" action="/deleteFolder/<%=folder.id%>">
+        <label>Are you sure you want to delete this folder?</label>
+        <button type="button" onclick="closePrompt()">Cancel</button>
+        <button type="submit">Confirm</button>
+      </form>
       <%if (!folder.parentFolder.isMain){%>
         <p><button><a href="/folder/<%=folder.parentFolder.parentId%>">...</a></button> > <button><a href="/folder/<%=folder.parentId%>"><%=folder.parentFolder.name%></a></button> > <button class="currentFolder"><%=folder.name%></button></p>
       <% } else{%>
@@ -19,10 +25,11 @@
     <form class="folder-prompt" style="display: none;" method="POST" action="/addFolder/<%=folder.id%>">
       <label>Folder name: <input name="folderName" type="text"></label>
       <button type="submit">Create folder</button>
+      <button type="button" onclick="closePrompt()">Cancel</button>
     </form>
     <a href="/addFile/<%=folder.id%>">Add File</a>
     <% folder.subfolders.forEach(subfolder=>{ %>
-      <button><a href="/folder/<%=subfolder.id%>"><%=subfolder.name%></a></button>
+      <a href="/folder/<%=subfolder.id%>"><button><%=subfolder.name%></button></a>
     <% }); %>
     <% folder.files.forEach(file=>{ %>
       <a href="/download/<%=file.id%>"><%=file.name%></p></a>
@@ -31,7 +38,15 @@
       function folderPrompt(){
         document.querySelector('.folder-prompt').style.display = 'block'
       }
+      function deleteConfirm(){
+        document.querySelector('.delete-confirm').style.display = 'block'
+      }
+      function closePrompt(){
+        document.querySelector('.folder-prompt').style.display = 'none'
+        document.querySelector('.delete-confirm').style.display = 'none'
+      }
     </script>
+    
   <%} else {%>
     <p>You do not have permission to view this folder</p>
   <% } %>

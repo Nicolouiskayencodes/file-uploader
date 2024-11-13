@@ -96,5 +96,20 @@ const openFolder = async (req, res) => {
   })
   res.render('folder', {folder: folder})
 }
+const deleteFolder = async(req,res) => {
+  const folder = await prisma.folder.findUnique({
+    where: {
+      id: parseInt(req.params.id),
+    }
+  })
+  if (!folder.isMain){
+    await prisma.folder.delete({
+      where: {
+        id: parseInt(req.params.id)
+      }
+    })
+  }
+  res.redirect(`/folder/${folder.parentId}`)
+}
 
-module.exports = {login, register, index, loginForm, registerForm, logout, redirectIndex, loginFailure, uploadForm, uploadConfirm, addFile, openFolder}
+module.exports = {login, register, index, loginForm, registerForm, logout, redirectIndex, loginFailure, uploadForm, uploadConfirm, addFile, openFolder, deleteFolder}

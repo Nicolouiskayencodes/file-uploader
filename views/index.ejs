@@ -24,10 +24,11 @@
             <form class="folder-prompt" style="display: none;" method="POST" action="/addFolder/<%=folder.id%>">
               <label>Folder name: <input name="folderName" type="text"></label>
               <button type="submit">Create folder</button>
+              <button type="button" onclick="closePrompt()">Cancel</button>
             </form>
             <a href="/addFile/<%=folder.id%>">Add File</a>
             <% folder.subfolders.forEach(subfolder=>{ %>
-              <button><a href="/folder/<%=subfolder.id%>"><%=subfolder.name%></a></button>
+              <a href="/folder/<%=subfolder.id%>"><button><%=subfolder.name%></button></a>
             <% }); %>
             <% folder.files.forEach(file=>{ %>
               <a href="/download/<%=file.id%>"><%=file.name%></p></a>
@@ -38,6 +39,9 @@
   <script>
     function folderPrompt(){
       document.querySelector('.folder-prompt').style.display = 'block'
+    }
+    function closePrompt(){
+        document.querySelector('.folder-prompt').style.display = 'none'
     }
   </script>
 </body>
