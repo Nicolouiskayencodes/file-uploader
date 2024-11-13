@@ -45,4 +45,6 @@ model File {
   folderId Int
   name String
   filepath String
+  uploaded DateTime @default(now())
+  size Int
 }

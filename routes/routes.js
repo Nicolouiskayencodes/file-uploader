@@ -31,8 +31,8 @@ router.get('/login-success', controller.redirectIndex);
 
 router.get('/login-failure', controller.loginFailure);
 
-router.get('/upload', controller.uploadForm)
-router.post('/upload', upload.single('uploaded_file'), controller.uploadConfirm)
+router.get('/upload/:id', controller.uploadForm)
+router.post('/upload/:id', upload.single('uploaded_file'), controller.uploadConfirm)
 
 router.post('/addFolder/:id', controller.addFile)
 
@@ -40,5 +40,7 @@ router.get('/folder/:id', controller.openFolder)
 
 router.post('/deleteFolder/:id', controller.deleteFolder)
 router.post('/renameFolder/:id', controller.renameFolder)
+
+router.get('/file/:id', controller.getFile)
 
 module.exports = router;

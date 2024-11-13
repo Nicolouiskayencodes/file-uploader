@@ -63,11 +63,18 @@ const loginFailure =  (req, res, next) => {
 }
 
 const uploadForm = (req, res) => {
-  res.render('upload')
+  res.render('upload', {id: req.params.id})
 }
 
-const uploadConfirm = (req, res) => {
-  console.log(req.file, req.body)
+const uploadConfirm = async (req, res) => {
+  await prisma.file.create({
+    data: {
+      name: req.body.file_name,
+      filepath: req.file.destination,
+      size: req.file.size,
+      folderId: parseInt(req.params.id),
+    }
+  })
   res.redirect('/')
 }
 
@@ -123,4 +130,17 @@ const renameFolder = async (req, res) => {
   res.redirect(`/folder/${req.params.id}`)
 }
 
-module.exports = {login, register, index, loginForm, registerForm, logout, redirectIndex, loginFailure, uploadForm, uploadConfirm, addFile, openFolder, deleteFolder, renameFolder}
+const getFile = async (req, res) => {
+  let file = await prisma.file.findUnique({
+    where: {
+      id: parseInt(req.params.id)
+    },
+    include:{
+      folder: true
+    }
+  })
+  console.log(file)
+  res.render('file', {file: file})
+}
+
+module.exports = {login, register, index, loginForm, registerForm, logout, redirectIndex, loginFailure, uploadForm, uploadConfirm, addFile, openFolder, deleteFolder, renameFolder, getFile}
