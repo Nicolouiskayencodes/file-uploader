@@ -172,7 +172,6 @@ const getFile = async (req, res) => {
       folder: true
     }
   })
-  console.log(file.storedName)
   res.render('file', {file: file})
 }
 
