@@ -10,6 +10,14 @@
   <% if (locals.currentUser && folder.ownerId === locals.currentUser.id) {%>
     <h2><%= folder.name %></h2>
     <%if(!folder.isMain){%>
+      <button onclick="changeFolderName()">Change folder name</button>
+      <form class="change-name" style="display: none;" method="POST" action="/renameFolder/<%=folder.id%>">
+        <label>Update name 
+          <input type="text" value="<%=folder.name%>" name="newName">
+          <button type="button" onclick="closePrompt()">Cancel</button>
+          <button type="submit">Confirm</button>
+        </label>
+      </form>
       <button onclick="deleteConfirm()">Delete <%folder.name%></button>
       <form class="delete-confirm" style="display: none;" method="POST" action="/deleteFolder/<%=folder.id%>">
         <label>Are you sure you want to delete this folder?</label>
@@ -41,9 +49,13 @@
       function deleteConfirm(){
         document.querySelector('.delete-confirm').style.display = 'block'
       }
+      function changeFolderName(){
+        document.querySelector('.change-name').style.display = 'block'
+      }
       function closePrompt(){
         document.querySelector('.folder-prompt').style.display = 'none'
         document.querySelector('.delete-confirm').style.display = 'none'
+        document.querySelector('.change-name').style.display = 'none'
       }
     </script>
     

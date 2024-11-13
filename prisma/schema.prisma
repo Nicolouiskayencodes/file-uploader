@@ -33,15 +33,15 @@ model Folder {
   isMain Boolean @default(false)
   owner Users @relation(fields: [ownerId], references: [id])
   ownerId Int
-  parentFolder Folder? @relation("subfolders",fields: [parentId], references: [id])
+  parentFolder Folder? @relation("subfolders",fields: [parentId], references: [id], onDelete: Cascade)
   parentId Int?
   subfolders Folder[] @relation("subfolders")
-  files File[]
+  files File[] 
 }
 
 model File {
   id    Int   @id @default(autoincrement())
-  folder Folder @relation(fields: [folderId], references: [id])
+  folder Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
   folderId Int
   name String
   filepath String

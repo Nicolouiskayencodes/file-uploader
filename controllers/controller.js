@@ -111,5 +111,16 @@ const deleteFolder = async(req,res) => {
   }
   res.redirect(`/folder/${folder.parentId}`)
 }
+const renameFolder = async (req, res) => {
+  await prisma.folder.update({
+    where: {
+      id : parseInt(req.params.id),
+    },
+    data: {
+      name: req.body.newName,
+    },
+  })
+  res.redirect(`/folder/${req.params.id}`)
+}
 
-module.exports = {login, register, index, loginForm, registerForm, logout, redirectIndex, loginFailure, uploadForm, uploadConfirm, addFile, openFolder, deleteFolder}
+module.exports = {login, register, index, loginForm, registerForm, logout, redirectIndex, loginFailure, uploadForm, uploadConfirm, addFile, openFolder, deleteFolder, renameFolder}

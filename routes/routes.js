@@ -39,5 +39,6 @@ router.post('/addFolder/:id', controller.addFile)
 router.get('/folder/:id', controller.openFolder)
 
 router.post('/deleteFolder/:id', controller.deleteFolder)
+router.post('/renameFolder/:id', controller.renameFolder)
 
 module.exports = router;
