@@ -1,12 +1,7 @@
 const router = require('express').Router();
 const controller = require('../controllers/controller.js')
-const crypto = require('crypto')
 const multer  = require('multer')
-const mime = require('mime')
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './uploads/')
-  },
+const storage = multer.memoryStorage({
   filename: function (req, file, cb) {
     crypto.pseudoRandomBytes(16, function (err, raw) {
       cb(null, raw.toString('hex') + Date.now() + '.' + mime.extension(file.mimetype));
@@ -42,5 +37,7 @@ router.post('/deleteFolder/:id', controller.deleteFolder)
 router.post('/renameFolder/:id', controller.renameFolder)
 
 router.get('/file/:id', controller.getFile)
+
+router.post('/deleteFile/:id', controller.deleteFile)
 
 module.exports = router;

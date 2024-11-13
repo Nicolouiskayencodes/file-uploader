@@ -47,4 +47,5 @@ model File {
   filepath String
   uploaded DateTime @default(now())
   size Int
+  storedName String
 }

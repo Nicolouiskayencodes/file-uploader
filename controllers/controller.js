@@ -1,6 +1,8 @@
 const passport = require('passport');
 const prisma = require('../db/prisma.js')
 const bcrypt = require('bcryptjs');
+const supabase = require('../config/supabase.js')
+const Crypto = require('crypto');
 
 const login = passport.authenticate('local', {
   successRedirect: "/login-success",
@@ -66,16 +68,45 @@ const uploadForm = (req, res) => {
   res.render('upload', {id: req.params.id})
 }
 
-const uploadConfirm = async (req, res) => {
-  await prisma.file.create({
-    data: {
-      name: req.body.file_name,
-      filepath: req.file.destination,
-      size: req.file.size,
-      folderId: parseInt(req.params.id),
+const uploadConfirm = async (req, res, next) => {
+  const ext = req.file.originalname.split('.').pop()
+  const filename = Crypto.randomUUID() + '.'+ ext
+  try {
+    const file = req.file;
+    if (!file) {
+      res.status(400).json({ message: "Please upload a file"});
+      return
     }
-  })
-  res.redirect('/')
+
+    const {data, error} = await supabase.storage
+    .from('file-uploader')
+    .upload(`public/${filename}`, file, {
+      contentType: file.mimetype
+    });
+    if (error) {
+      return next(error)
+    }
+    
+  } catch (error) {
+    return next(error)
+  }
+    const {data} = supabase.storage
+    .from('file-uploader')
+    .getPublicUrl(`public/${filename}`, {
+      download: true
+    });
+
+
+  await prisma.file.create({
+        data: {
+          name: req.body.file_name,
+          storedName: filename,
+          filepath: data.publicUrl,
+          size: req.file.size,
+          folderId: parseInt(req.params.id),
+        }
+      })
+  res.redirect(`/folder/${req.params.id}`)
 }
 
 const addFile = async (req, res) => {
@@ -139,8 +170,25 @@ const getFile = async (req, res) => {
       folder: true
     }
   })
-  console.log(file)
+  console.log(file.storedName)
   res.render('file', {file: file})
 }
 
-module.exports = {login, register, index, loginForm, registerForm, logout, redirectIndex, loginFailure, uploadForm, uploadConfirm, addFile, openFolder, deleteFolder, renameFolder, getFile}
+const deleteFile = async (req, res) => {
+  const file = await prisma.file.findUnique({
+    where: {
+      id: parseInt(req.params.id)
+    }
+  })
+  await prisma.file.delete({
+    where: {
+      id: parseInt(req.params.id)
+    }
+  })
+  const {data, error} = await supabase.storage
+  .from('file-uploader')
+  .remove([`public/${file.storedName}`])
+  res.redirect(`/folder/${file.folderId}`)
+}
+
+module.exports = {login, register, index, loginForm, registerForm, logout, redirectIndex, loginFailure, uploadForm, uploadConfirm, addFile, openFolder, deleteFolder, renameFolder, getFile, deleteFile}

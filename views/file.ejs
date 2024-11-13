@@ -11,6 +11,20 @@
   <h1><%=file.name%></h1>
   <p>Size: <%= file.size%> b</p>
   <p>Uploaded: <%= file.uploaded%></p>
-  <p>Download: <%= file.filepath%></p>
+  <p>Download: <a href="<%= file.filepath%>"><%= file.filepath%></a></p>
+  <button onclick="deleteFile()">Delete file</button>
+  <form class="delete-file" style="display: none;" method="POST" action="/deleteFile/<%=file.id%>">
+    <label>Are you sure you want to delete this file?</label>
+    <button type="button" onclick="closePrompt()">Cancel</button>
+    <button type="submit">Confirm</button>
+  </form>
+  <script>
+    function deleteFile() {
+      document.querySelector('.delete-file').style.display = 'block'
+    }
+    function closePrompt() {
+      document.querySelector('.delete-file').style.display = 'none'
+    }
+  </script>
 </body>
 </html>
