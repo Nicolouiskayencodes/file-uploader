@@ -6,8 +6,15 @@
   <title><%=folder.name%></title>
 </head>
 <body>
+  <a href="/">Home</a>
   <% if (locals.currentUser && folder.ownerId === locals.currentUser.id) {%>
     <h2><%= folder.name %></h2>
+    <%if(!folder.isMain){%>
+      <%if (!folder.parentFolder.isMain){%>
+        <p><button><a href="/folder/<%=folder.parentFolder.parentId%>">...</a></button> > <button><a href="/folder/<%=folder.parentId%>"><%=folder.parentFolder.name%></a></button> > <button class="currentFolder"><%=folder.name%></button></p>
+      <% } else{%>
+      <p><button><a href="/folder/<%=folder.parentId%>"><%=folder.parentFolder.name%></a></button> > <button class="currentFolder"><%=folder.name%></button></p>
+    <%}}%>
     <button onclick="folderPrompt()">New Folder</button>
     <form class="folder-prompt" style="display: none;" method="POST" action="/addFolder/<%=folder.id%>">
       <label>Folder name: <input name="folderName" type="text"></label>

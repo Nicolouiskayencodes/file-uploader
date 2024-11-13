@@ -89,6 +89,7 @@ const openFolder = async (req, res) => {
       id: parseInt(req.params.id),
     },
     include: {
+      parentFolder: true,
       subfolders: true,
       files: true,
     }
