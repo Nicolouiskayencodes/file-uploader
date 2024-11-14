@@ -218,9 +218,15 @@ const viewShare = async (req, res) => {
       shareId: req.params.shareId,
     },
     include: {
-      files: true
+      files: true,
+      owner: {
+        select: {
+          username: true
+        }
+      }
     }
   })
+  console.log(sharedFolder)
   var shareUrl = req.protocol + '://' + req.get('host') + '/share/' + sharedFolder.shareId
   res.render('shared', {folder: sharedFolder, shareUrl: shareUrl})
 }

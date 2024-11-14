@@ -11,6 +11,7 @@
   <a href="/">Home</a>
   <% if ((new Date() < folder.expiration)) { %>
     <h1><%=folder.name%></h1>
+    <p>Shared by <%=folder.owner.username%></p>
     <p>This folder is available until <%=folder.expiration.toLocaleString()%></p>
     <p>Copy this address to share this folder: <strong><%=shareUrl%></strong></p>
     <h3>Files</h3>

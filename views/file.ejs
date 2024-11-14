@@ -14,7 +14,7 @@
   <h1><%=file.name%></h1>
   <p>Size: <%= file.size%> b</p>
   <p>Uploaded: <%= file.uploaded%></p>
-  <p>Download: <a href="<%= file.filepath%>"><%= file.filepath%></a></p>
+  <p>Download: <a class="download" href="<%= file.filepath%>"><%= file.filepath%></a></p>
   <button onclick="deleteFile()">Delete file</button>
   <form class="delete-file" style="display: none;" method="POST" action="/deleteFile/<%=file.id%>">
     <label>Are you sure you want to delete this file?</label>

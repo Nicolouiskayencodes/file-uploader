@@ -106,3 +106,7 @@ li a {
 p {
   margin: 10px;
 }
+
+.download {
+  border: none;
+}
