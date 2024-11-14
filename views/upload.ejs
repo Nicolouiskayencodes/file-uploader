@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="/styles.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Upload file</title>
 </head>
 <body>
+  <%-include('header')%>
   <a href="/">Home</a>
   <% if (!locals.currentUser) {%>
   <p>You must be signed in to access this page</p>

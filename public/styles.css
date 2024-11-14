@@ -1,0 +1,108 @@
+/* reset */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+}
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+input, button, textarea, select {
+  font: inherit;
+}
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+#root, #__next {
+  isolation: isolate;
+}
+
+/* style */
+* {
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+
+a {
+  margin: 10px;
+  padding: 5px;
+  border: outset 2px gray;
+}
+
+a:hover,
+a:active {
+  border: inset 2px gray;
+}
+
+h1, h2, h3 {
+  padding: 10px;
+  background-color:powderblue;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+header,
+header h1 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: midnightblue;
+  padding: 10px;
+  color:gold;
+  margin-bottom: 5px;
+}
+
+ul {
+  list-style: none;
+}
+
+form {
+  border: solid 1px black;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 3px 3px 3px dimgray;
+  margin: 10px;
+}
+
+button a,
+button a:hover,
+button a:active,
+a button {
+  border: none;
+  background-color: transparent;
+}
+
+button a {
+  color: black;
+  text-decoration: none;
+}
+
+p button {
+  border: none;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color:lightblue;
+}
+p button:hover,
+p button:active {
+  background-color: skyblue;
+}
+
+button {
+  margin: 5px;
+}
+button:hover{
+  cursor: pointer;
+}
+li a {
+  color: blue;
+  border-radius: 5px;
+}
+
+p {
+  margin: 10px;
+}

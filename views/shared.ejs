@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="/styles.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%=folder.name%></title>
 </head>
 <body>
+  <%-include('header')%>
+  <a href="/">Home</a>
   <% if ((new Date() < folder.expiration)) { %>
     <h1><%=folder.name%></h1>
     <p>This folder is available until <%=folder.expiration.toLocaleString()%></p>
@@ -14,12 +17,11 @@
     <h3>Files</h3>
     <ul>
     <% folder.files.forEach(file=>{ %>
-      <li><a href="/fileshare/<%=folder.shareId%>/<%=file.id%>"><%=file.name%></p></a></li>
+      <li><a href="/fileshare/<%=folder.shareId%>/<%=file.id%>"><%=file.name%></a></li>
     <%}); %>
     </ul>
   <%} else {%>
     <p>Your share link has expired.</p>
-    <a href="/">Home</a>
     <%}%>
 </body>
 </html>

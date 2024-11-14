@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="/styles.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%=file.name%></title>
 </head>
 <body>
+  <%-include('header')%>
+  <a href="/">Home</a>
   <% if ((shareId === file.folder.shareId) && (new Date() < file.folder.expiration)) {%>
     <a href="/share/<%=file.folder.shareId%>"><button><%=file.folder.name%></button></a>
   <h1><%=file.name%></h1>
@@ -14,7 +17,6 @@
   <p>Download: <a href="<%= file.filepath%>"><%= file.filepath%></a></p>
   <%} else {%>
     <p>Your share link has expired.</p>
-    <a href="/">Home</a>
   <%}%>
 </body>
 </html>

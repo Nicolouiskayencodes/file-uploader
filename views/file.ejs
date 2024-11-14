@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="/styles.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%=file.name%></title>
 </head>
 <body>
+  <%-include('header')%>
   <a href="/">Home</a>
 <% if (file.folder.ownerId === locals.currentUser.id) {%>
   <a href="/folder/<%=file.folderId%>"><button><%=file.folder.name%></button></a>
