@@ -13,7 +13,6 @@
     <h1><%=folder.name%></h1>
     <p>This folder is available until <%=folder.expiration.toLocaleString()%></p>
     <p>Copy this address to share this folder: <strong><%=shareUrl%></strong></p>
-        <a href="/share/<%=folder.shareId%>">Link to shared folder</a>
     <h3>Files</h3>
     <ul>
     <% folder.files.forEach(file=>{ %>
