@@ -134,6 +134,7 @@ const openFolder = async (req, res) => {
       files: true,
     }
   })
+  console.log(folder);
   res.render('folder', {folder: folder})
 }
 const deleteFolder = async(req,res) => {
@@ -189,7 +190,26 @@ const deleteFile = async (req, res) => {
   const {data, error} = await supabase.storage
   .from('file-uploader')
   .remove([`public/${file.storedName}`])
+
   res.redirect(`/folder/${file.folderId}`)
 }
 
-module.exports = {login, register, index, loginForm, registerForm, logout, redirectIndex, loginFailure, uploadForm, uploadConfirm, addFile, openFolder, deleteFolder, renameFolder, getFile, deleteFile}
+const shareFolder = async (req, res, next) => {
+  const cryptoShare = Crypto.randomUUID()
+  try{
+  await prisma.folder.update({
+    where: {
+      id: parseInt(req.params.id),
+    },
+    data: {
+      shareId: cryptoShare,
+      expiration: new Date(req.body.expiration)
+    }
+  })
+  } catch (err) {
+    return next(err)
+  }
+  res.redirect(`/folder/${req.params.id}`)
+}
+
+module.exports = {login, register, index, loginForm, registerForm, logout, redirectIndex, loginFailure, uploadForm, uploadConfirm, addFile, openFolder, deleteFolder, renameFolder, getFile, deleteFile, shareFolder}

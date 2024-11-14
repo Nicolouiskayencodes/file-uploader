@@ -10,6 +10,15 @@
   <% if (locals.currentUser && folder.ownerId === locals.currentUser.id) {%>
     <h2><%= folder.name %></h2>
     <%if(!folder.isMain){%>
+      <button onclick="shareForm()">Share this folder</button>
+      <form class="share-folder" style="display: none;" method="POST" action="/share/<%=folder.id%>">
+        <label>This will share only the files contained in this folder. Subfolders will not be included!</label>
+        <label>Share this date until: 
+          <input type="datetime-local" name="expiration">
+        </label>
+        <button type="button" onclick="closePrompt()">Cancel</button>
+        <button type="submit">Share</button>
+      </form>
       <button onclick="changeFolderName()">Change folder name</button>
       <form class="change-name" style="display: none;" method="POST" action="/renameFolder/<%=folder.id%>">
         <label>Update name 
@@ -50,19 +59,23 @@
     </ul>
     <script>
       function folderPrompt(){
-        document.querySelector('.folder-prompt').style.display = 'block'
-      }
+        document.querySelector('.folder-prompt').style.display = 'block';
+      };
       function deleteConfirm(){
-        document.querySelector('.delete-confirm').style.display = 'block'
-      }
+        document.querySelector('.delete-confirm').style.display = 'block';
+      };
       function changeFolderName(){
-        document.querySelector('.change-name').style.display = 'block'
-      }
+        document.querySelector('.change-name').style.display = 'block';
+      };
+      function shareForm(){
+        document.querySelector('.share-folder').style.display = 'block';
+      };
       function closePrompt(){
-        document.querySelector('.folder-prompt').style.display = 'none'
-        document.querySelector('.delete-confirm').style.display = 'none'
-        document.querySelector('.change-name').style.display = 'none'
-      }
+        document.querySelector('.folder-prompt').style.display = 'none';
+        document.querySelector('.delete-confirm').style.display = 'none';
+        document.querySelector('.change-name').style.display = 'none';
+        document.querySelector('.share-folder').style.display = 'none';
+      };
     </script>
     
   <%} else {%>

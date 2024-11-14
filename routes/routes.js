@@ -40,4 +40,6 @@ router.get('/file/:id', controller.getFile)
 
 router.post('/deleteFile/:id', controller.deleteFile)
 
+router.post('/share/:id', controller.shareFolder)
+
 module.exports = router;
