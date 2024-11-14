@@ -10,6 +10,11 @@
   <% if (locals.currentUser && folder.ownerId === locals.currentUser.id) {%>
     <h2><%= folder.name %></h2>
     <%if(!folder.isMain){%>
+      <% if ((folder.shareId) && (new Date() < folder.expiration)) { %>
+        <p>Folder is being shared until <%=folder.expiration.toLocaleString()%></p>
+        <p>Copy this address to share this folder: <strong><%=shareUrl%></strong></p>
+        <a href="/share/<%=folder.shareId%>">Link to shared folder</a>
+      <%}%>
       <button onclick="shareForm()">Share this folder</button>
       <form class="share-folder" style="display: none;" method="POST" action="/share/<%=folder.id%>">
         <label>This will share only the files contained in this folder. Subfolders will not be included!</label>

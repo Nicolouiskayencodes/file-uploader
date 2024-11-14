@@ -134,8 +134,8 @@ const openFolder = async (req, res) => {
       files: true,
     }
   })
-  console.log(folder);
-  res.render('folder', {folder: folder})
+  var shareUrl = req.protocol + '://' + req.get('host') + '/share/' + folder.shareId
+  res.render('folder', {folder: folder, shareUrl: shareUrl})
 }
 const deleteFolder = async(req,res) => {
   const folder = await prisma.folder.findUnique({
@@ -212,4 +212,29 @@ const shareFolder = async (req, res, next) => {
   res.redirect(`/folder/${req.params.id}`)
 }
 
-module.exports = {login, register, index, loginForm, registerForm, logout, redirectIndex, loginFailure, uploadForm, uploadConfirm, addFile, openFolder, deleteFolder, renameFolder, getFile, deleteFile, shareFolder}
+const viewShare = async (req, res) => {
+  const sharedFolder = await prisma.folder.findUnique({
+    where: {
+      shareId: req.params.shareId,
+    },
+    include: {
+      files: true
+    }
+  })
+  var shareUrl = req.protocol + '://' + req.get('host') + '/share/' + sharedFolder.shareId
+  res.render('shared', {folder: sharedFolder, shareUrl: shareUrl})
+}
+
+const fileShare = async (req, res) => {
+  const sharedFile = await prisma.file.findUnique({
+    where: {
+      id: parseInt(req.params.fileId)
+    },
+    include:{
+      folder: true
+    }
+  })
+  res.render('fileshare', {file: sharedFile, shareId: req.params.shareId})
+}
+
+module.exports = {login, register, index, loginForm, registerForm, logout, redirectIndex, loginFailure, uploadForm, uploadConfirm, addFile, openFolder, deleteFolder, renameFolder, getFile, deleteFile, shareFolder, viewShare, fileShare}

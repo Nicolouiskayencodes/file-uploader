@@ -37,7 +37,7 @@ model Folder {
   parentId Int?
   subfolders Folder[] @relation("subfolders")
   files File[] 
-  shareId String?
+  shareId String? @unique
   expiration DateTime?
 }
 

@@ -44,7 +44,7 @@ app.use(routes);
 
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(err.statusCode || 500).send(err);
+  res.status(err.statusCode || 500).render('error', {error: err});
 });
 
 const PORT = process.env.PORT || 3000;
